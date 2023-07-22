@@ -10,9 +10,12 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 public class RevisionField {
-    private String field;
+    private String fieldName;
     private Object currentValue;
     private Object newValue;
+    private RevisionField currentCustomFieldValue;
+    private RevisionField newCustomFieldValue;
+
     private boolean changed;
 
     public void checkIfChanged() {
@@ -20,7 +23,7 @@ public class RevisionField {
     }
 
     public String toString() {
-        return "FieldRevision [" + append("field", field) +
+        return "FieldRevision [" + append("fieldName", fieldName) +
                 append("currentValue", currentValue) +
                 append("newValue", newValue) +
                 append("changed", changed) + "]";

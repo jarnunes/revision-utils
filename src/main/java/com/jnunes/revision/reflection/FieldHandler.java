@@ -1,14 +1,12 @@
 package com.jnunes.revision.reflection;
 
-import com.jnunes.revision.AuditorException;
-import com.jnunes.revision.RevisionField;
+import com.jnunes.revision.RevisionException;
+import com.jnunes.revision.EntityField;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class FieldHandler<T> {
     T entity;
@@ -17,37 +15,29 @@ public class FieldHandler<T> {
         this.entity = entity;
     }
 
-    public Map<String, Object> toHashMap() {
-        Map<String, Object> fieldsMap = new HashMap<>();
+    public List<EntityField> build() {
+        List<EntityField> entityFields = new ArrayList<>();
 
-        Field[] entityFields = entity.getClass().getDeclaredFields();
+        Stream.of(entity.getClass().getDeclaredFields()).map(this::createEntityField).forEach(entityFields::add);
+        return entityFields;
+    }
 
+    private EntityField createEntityField(Field field) {
         try {
-            for (Field field : entityFields) {
+            field.setAccessible(true);
 
-                field.setAccessible(true);
-                fieldsMap.put(field.getName(), field.get(entity));
-            }
+            EntityField entityField = new EntityField();
+            entityField.setName(field.getName());
+            entityField.setValue(field.get(entity));
+            entityField.setType(field.getType());
+            return entityField;
 
-            return fieldsMap;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            throw new AuditorException("An error was occurred on field get value.", e);
+            throw new RevisionException("An error was occurred during get value of field '" + field.getName() + "'", e);
         }
+
     }
 
-    public <R> void entitySetterValues(Function<RevisionField, R> getFieldValue, List<RevisionField> revisionFields) {
-        try {
-            for (RevisionField revisionField : revisionFields) {
-                Field field = entity.getClass().getField(revisionField.getField());
-                field.setAccessible(true);
-                field.set(entity, getFieldValue.apply(revisionField));
-            }
-        } catch (NoSuchFieldException e) {
-            throw new AuditorException("Field not found exception.", e);
-        } catch (IllegalAccessException e) {
-            throw new AuditorException("An error occurred on set field value. ", e);
-        }
-    }
 
 }

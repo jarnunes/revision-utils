@@ -24,7 +24,7 @@ public class App {
 
 
         RevisionProcessor<Employee> employeeAuditorCheck = new RevisionProcessor<>(employee2, employee1);
-        employeeAuditorCheck.getFieldRevisions().forEach(fieldRevision -> {
+        employeeAuditorCheck.build().forEach(fieldRevision -> {
             System.out.println(fieldRevision.toString());
             System.out.println();
         });
