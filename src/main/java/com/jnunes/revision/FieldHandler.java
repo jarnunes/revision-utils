@@ -1,6 +1,5 @@
-package com.jnunes.revision.reflection;
+package com.jnunes.revision;
 
-import com.jnunes.revision.RevisionException;
 import com.jnunes.revision.vo.EntityField;
 
 import java.lang.reflect.Field;
@@ -11,8 +10,12 @@ import java.util.stream.Stream;
 public class FieldHandler<T> {
     T entity;
 
-    public FieldHandler(T entity) {
+    private FieldHandler(T entity) {
         this.entity = entity;
+    }
+
+    public static <T> FieldHandler<T> of(T entity){
+        return new FieldHandler<>(entity);
     }
 
     public List<EntityField<T>> build() {

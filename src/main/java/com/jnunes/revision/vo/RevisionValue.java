@@ -3,13 +3,15 @@ package com.jnunes.revision.vo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class RevisionValue<T> extends VOBase {
+@ToString
+public class RevisionValue<T> {
 
     private T current;
     private T updated;
@@ -20,10 +22,4 @@ public class RevisionValue<T> extends VOBase {
         this.changed = !Objects.equals(current, updated);
     }
 
-    public String toString() {
-        return "RevisionValue [ " +
-                append("current", current) +
-                append("updated", updated) +
-                append("changed", changed) + " ]";
-    }
 }

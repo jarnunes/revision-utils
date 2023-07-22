@@ -1,9 +1,10 @@
 package com.jnunes;
 
 import com.jnunes.domain.Department;
-import com.jnunes.revision.RevisionProcessor;
 import com.jnunes.domain.Employee;
 import com.jnunes.domain.PositionType;
+import com.jnunes.revision.RevisionProcessor;
+import com.jnunes.revision.vo.RevisionValue;
 
 public class App {
     public static void main(String[] args) {
@@ -35,10 +36,14 @@ public class App {
         employee2.setSalary(35000d);
         employee2.setDepartment(department2);
 
-
-        RevisionProcessor<Employee> employeeAuditorCheck = new RevisionProcessor<>(employee2, employee1);
-        employeeAuditorCheck.build().forEach(fieldRevision ->
-                System.out.println(fieldRevision.toString()));
+        RevisionProcessor.of(employee1, employee2).onlyUpdated().build().forEach(fieldRevision -> {
+            System.out.println("=======================================================================");
+            System.out.println("Field: " + fieldRevision.getName());
+            RevisionValue<?> revisionValue = fieldRevision.getRevisionValue();
+            System.out.println("Current: " + revisionValue.getCurrent());
+            System.out.println("Updated: " + revisionValue.getUpdated());
+            System.out.println();
+        });
 
     }
 }
