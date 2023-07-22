@@ -3,10 +3,12 @@ package com.jnunes.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(exclude = "department")
+@ToString
 public class Employee {
 
     private Long id;
@@ -16,19 +18,4 @@ public class Employee {
     private Double salary;
     private PositionType position;
     private Department department;
-
-    public String toString() {
-        return this.getClass().getSimpleName() + "[ " +
-                append("id", id) +
-                append("name", name) +
-                append("email", email) +
-                append("age", age) +
-                append("salary", salary) +
-                append("position", position) +
-                append("department", department) + " ]";
-    }
-
-    private String append(String field, Object value) {
-        return field + "=" + value + "; ";
-    }
 }

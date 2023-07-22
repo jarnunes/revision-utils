@@ -1,6 +1,6 @@
 package com.jnunes.revision.reflection;
 
-import com.jnunes.revision.EntityField;
+import com.jnunes.revision.vo.EntityField;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

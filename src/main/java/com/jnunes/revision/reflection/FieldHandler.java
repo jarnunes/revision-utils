@@ -1,7 +1,7 @@
 package com.jnunes.revision.reflection;
 
 import com.jnunes.revision.RevisionException;
-import com.jnunes.revision.EntityField;
+import com.jnunes.revision.vo.EntityField;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -15,20 +15,21 @@ public class FieldHandler<T> {
         this.entity = entity;
     }
 
-    public List<EntityField> build() {
-        List<EntityField> entityFields = new ArrayList<>();
+    public List<EntityField<T>> build() {
+        List<EntityField<T>> entityFields = new ArrayList<>();
 
         Stream.of(entity.getClass().getDeclaredFields()).map(this::createEntityField).forEach(entityFields::add);
         return entityFields;
     }
 
-    private EntityField createEntityField(Field field) {
+    @SuppressWarnings("unchecked")
+    private EntityField<T> createEntityField(Field field) {
         try {
             field.setAccessible(true);
 
-            EntityField entityField = new EntityField();
+            EntityField<T> entityField = new EntityField<>();
             entityField.setName(field.getName());
-            entityField.setValue(field.get(entity));
+            entityField.setValue((T)field.get(entity));
             entityField.setType(field.getType());
             return entityField;
 
