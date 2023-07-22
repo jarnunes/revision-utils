@@ -6,12 +6,8 @@ public class RevisionException extends RuntimeException {
         super(message);
     }
 
-    public RevisionException(IllegalAccessException exception) {
-        super(exception);
-    }
-
-    public RevisionException(String message, ReflectiveOperationException exception) {
-        super(exception);
+    public RevisionException(String message, Throwable exception) {
+        super(message,exception);
     }
 
 }

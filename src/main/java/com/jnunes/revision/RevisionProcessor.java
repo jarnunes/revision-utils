@@ -29,23 +29,23 @@ public class RevisionProcessor<T> {
         return this;
     }
 
-    public List<RevisionField<T>> build() {
+    public List<RevisionField> build() {
         return onlyUpdated ? buildOnlyUpdated() : internalBuild();
     }
 
-    private List<RevisionField<T>> buildOnlyUpdated() {
+    private List<RevisionField> buildOnlyUpdated() {
         return internalBuild().stream().filter(it -> it.getRevisionValue().isChanged()).toList();
     }
 
-    private List<RevisionField<T>> internalBuild() {
-        List<EntityField<T>> currentEntityFields = FieldHandler.of(currentEntity).build();
-        List<EntityField<T>> updatedEntityFields = FieldHandler.of(updatedEntity).build();
+    private List<RevisionField> internalBuild() {
+        List<EntityField> currentEntityFields = FieldHandler.of(currentEntity).build();
+        List<EntityField> updatedEntityFields = FieldHandler.of(updatedEntity).build();
 
-        List<RevisionField<T>> revisionFields = new ArrayList<>();
+        List<RevisionField> revisionFields = new ArrayList<>();
 
         currentEntityFields.forEach(currentField -> {
-            EntityField<T> updatedField = getUpdatedField(currentField.getName(), updatedEntityFields);
-            RevisionField<T> revisionField = createRevisionField(currentField, updatedField);
+            EntityField updatedField = getUpdatedField(currentField.getName(), updatedEntityFields);
+            RevisionField revisionField = createRevisionField(currentField, updatedField);
 
             revisionFields.add(revisionField);
         });
@@ -53,20 +53,20 @@ public class RevisionProcessor<T> {
         return revisionFields;
     }
 
-    private EntityField<T> getUpdatedField(String name, List<EntityField<T>> newEntityFields) {
-        Predicate<EntityField<T>> equalsName = entityField -> Objects.equals(name, entityField.getName());
+    private EntityField getUpdatedField(String name, List<EntityField> newEntityFields) {
+        Predicate<EntityField> equalsName = entityField -> Objects.equals(name, entityField.getName());
 
         return newEntityFields.stream().filter(equalsName).findFirst()
                 .orElseThrow(() -> new RevisionException("Field not found exception."));
     }
 
-    private RevisionField<T> createRevisionField(EntityField<T> currentField, EntityField<T> updatedField) {
-        RevisionValue<T> revisionValue = new RevisionValue<>();
+    private RevisionField createRevisionField(EntityField currentField, EntityField updatedField) {
+        RevisionValue revisionValue = new RevisionValue();
         revisionValue.setCurrent(currentField.getValue());
         revisionValue.setUpdated(updatedField.getValue());
         revisionValue.checkIfChanged();
 
-        RevisionField<T> revisionField = new RevisionField<>();
+        RevisionField revisionField = new RevisionField();
         revisionField.setName(currentField.getName());
         revisionField.setRevisionValue(revisionValue);
         return revisionField;

@@ -9,8 +9,8 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class EntityField<F> {
+public class EntityField {
     private String name;
-    private F value;
+    private Object value;
     private Class<?> type;
 }

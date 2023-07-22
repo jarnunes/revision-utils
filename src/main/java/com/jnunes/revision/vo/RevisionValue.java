@@ -11,10 +11,10 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @ToString
-public class RevisionValue<T> {
+public class RevisionValue {
 
-    private T current;
-    private T updated;
+    private Object current;
+    private Object updated;
 
     private boolean changed;
 

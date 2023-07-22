@@ -9,8 +9,8 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class RevisionField<T> {
+public class RevisionField {
     private String name;
-    private RevisionValue<T> revisionValue;
+    private RevisionValue revisionValue;
 
 }
