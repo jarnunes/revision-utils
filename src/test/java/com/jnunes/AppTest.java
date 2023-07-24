@@ -64,7 +64,6 @@ public class AppTest extends TestCase {
         employee1.setId(2L);
         employee1.setPosition(PositionType.ADMIN_ASSISTANT);
 
-
         List<RevisionField> revisionProcessor = RevisionProcessor.of(employee, employee1).onlyUpdated().build();
 
         assertEquals(revisionProcessor.size(), 2);
@@ -75,7 +74,6 @@ public class AppTest extends TestCase {
     public void testRevisionProcessorChangedFieldNotFoundException() {
         Department department = DepartmentMother.buildDepartment();
         DepartmentChild departmentChild = DepartmentMother.buildDepartmentChild();
-
 
         try {
             RevisionProcessor.of(departmentChild, department).onlyUpdated().build();

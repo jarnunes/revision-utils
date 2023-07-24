@@ -27,7 +27,7 @@ public class FieldHandler<T> {
 
     protected EntityField createEntityField(Field field) {
         try {
-            field.setAccessible(true);
+            field.trySetAccessible();
 
             EntityField entityField = new EntityField();
             entityField.setName(field.getName());
